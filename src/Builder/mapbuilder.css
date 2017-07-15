@@ -1,0 +1,70 @@
+.mb_title {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center; }
+
+nav {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around; }
+  nav .box {
+    display: flex; }
+  nav button {
+    margin-right: 10px;
+    margin-left: 10px;
+    border: none;
+    border-bottom: 1px solid red;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    transition-duration: 1s; }
+  nav button:active {
+    animation-name: ani_button-press;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-out; }
+  nav button:focus {
+    outline: none; }
+
+@keyframes ani_button-press {
+  0% {
+    transform: translateY(0px); }
+  50% {
+    transform: translateY(2px); }
+  0% {
+    transform: translateY(0px); } }
+
+table {
+  padding: 20px;
+  padding-top: 0px;
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  border: 0; }
+  table tbody {
+    background-color: white; }
+  table td {
+    width: 20px;
+    height: 20px;
+    background-color: black; }
+  table .wall {
+    background-color: purple; }
+
+.noGridlines {
+  border-collapse: collapse; }
+
+.builder_main {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  padding-top: 20px; }
+
+.optionsSideBar {
+  width: 150px; }
+  .optionsSideBar h3, .optionsSideBar p {
+    margin-top: 5px; }
+  .optionsSideBar .box {
+    width: 20px;
+    height: 20px;
+    background-color: green;
+    display: inline-block; }
