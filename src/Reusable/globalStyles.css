@@ -1,0 +1,62 @@
+button {
+  border: none;
+  background-color: black;
+  color: white; }
+  button:focus {
+    outline: none; }
+
+.btn_main {
+  margin-right: 10px;
+  margin-left: 10px;
+  border-bottom: 1px solid red;
+  border-radius: 5px;
+  padding: 10px;
+  transition-duration: 1s; }
+
+.btn_main:active {
+  animation-name: ani_button-press;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out; }
+
+.btn_piecesList {
+  display: block;
+  padding: 0.1rem 0px 0px 2px;
+  width: 100px;
+  text-align: left; }
+
+.title {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center; }
+
+nav {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-around; }
+  nav .box {
+    display: flex; }
+
+table {
+  padding: 20px;
+  padding-top: 0px;
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  border: 0; }
+  table tbody {
+    background-color: white; }
+  table td {
+    background-color: black; }
+
+.builder_table td {
+  width: 20px;
+  height: 20px; }
+
+.game_table {
+  border-collapse: collapse; }
+  .game_table tbody {
+    border: 5px white solid; }
+  .game_table td {
+    width: 10px;
+    height: 10px; }

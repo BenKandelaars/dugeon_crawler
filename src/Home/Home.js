@@ -1,19 +1,17 @@
 import React from "react";
 import "./home.css"
+import "../Reusable/globalStyles.css"
 
-class Home extends React.Component {
-  render() {
-    return (
-      <div>
-        <header>
-          <div className="head">
-            <h1>Rogue-like Dungeon Crawler</h1>
-          </div>
-        </header>
-        {this.props.children}
+// construct index to link between screens
+// start on game
+
+function Home (props) {
+  return (
+      <div className="home">
+        <button className="btn_main" onClick={()=> props.changeLocation("game")}>New Game</button>
+        <button className="btn_main" onClick={()=> props.changeLocation("mapBuilder")}>Map Builder</button>
       </div>
     )
-  }
 }
 
 export default Home

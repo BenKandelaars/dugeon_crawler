@@ -14,3 +14,14 @@ header {
   border: 2px solid red;
   border-radius: 10px;
 }
+
+.home {
+  margin: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  button {
+    margin-top: 20px;
+  }
+}
