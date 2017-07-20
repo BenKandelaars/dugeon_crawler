@@ -24,7 +24,7 @@ export function initPlayer() {
   }
 }
 
-export function getGameData() {
+export function initGameMaps() {
   return {
     "1" : {
       grid: [["#","#","","","#","#","#","#","#","#"],["#","","","","","","","","","#"],["#","","","","","","","","","#"],["#","","","","","","","","","#"],["#","","","#","#","#","#","","","#"],["#","","","#","","","#","","","#"],["#","","","#","","","#","","","#"],["#","","","","","","","","","#"],["#","","","","","","","","","#"],["#","#","#","#","#","#","#","#","#","#"]],
@@ -34,20 +34,23 @@ export function getGameData() {
       },
       playerLoc: {
       }
+    }
+  }
+}
+
+export function initGamePieces() {
+  return {
+    "#": {
+      name: "Wall",
+      type: "environment",
+      color: "grey",
+      number: -1,
     },
-    pieces: {
-      "#": {
-        name: "Wall",
-        type: "environment",
-        color: "grey",
-        number: -1,
-      },
-      "+": {
-        name: "Player",
-        type: "player",
-        color: "green",
-        number: 1
-      }
+    "+": {
+      name: "Player",
+      type: "player",
+      color: "green",
+      number: 1
     }
   }
 }

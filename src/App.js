@@ -3,7 +3,7 @@ import "./App.css";
 import Home from "./Home/Home.js";
 import Game from "./Game/Game.js";
 import MapBuilder from "./Builder/MapBuilder.js";
-import { getGameData } from "./Util/utils.js"
+import { initGameMaps, initGamePieces } from "./Util/utils.js"
 
 class App extends Component {
   constructor (props){
@@ -27,16 +27,17 @@ class App extends Component {
       "game": (props) => <Game {...props} />
     }
 
-    const gameData = getGameData()
+    const gameMaps = initGameMaps();
+    const pieces = initGamePieces();
 
     let componentProps = {
       changeLocation: this.changeLocation.bind(this),
-      pieces: gameData.pieces
+      pieces: pieces
     }
 
     if (this.state.route === "game" || this.state.route === "mapBuilder"){
       componentProps = Object.assign(componentProps, {
-        gameMap: gameData["1"]
+        gameMap: gameMaps["1"]
       })
     }
 
