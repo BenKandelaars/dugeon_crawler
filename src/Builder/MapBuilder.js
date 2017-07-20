@@ -124,17 +124,18 @@ class MapBuilder extends React.Component {
       pieces: this.props.pieces,
       selectingActive: false,
       selectedPiece: "#",
-      exiting: false
+      exiting: false //MAKE THIS CLEARER
     }
   }
 
-  componentWillMount() {
+  /* componentWillMount() {
+
     /* Code to initialise a fresh grid. Using mapBuilder to edit current game map so it initialise the current map instead.
     this.setState({
       grid: initGrid(this.state.x, this.state.y),
     })
-    */
-  }
+
+  } */
 
   exitHome() {
     this.setState(
@@ -147,35 +148,45 @@ class MapBuilder extends React.Component {
   }
 
   toggleTile(e) {
-    //Uses selectedPiece & gameMap in component state.
+    //Uses component state
     const x = e.target.getAttribute("data-x");
-    const y = e.target.getAttribute("data-y");
-
     if (x === null) { return }
 
+    const y = e.target.getAttribute("data-y");
     const vector = new Vector(x, y)
-    let piece = this.state.selectedPiece
 
+    const selectedPiece = this.state.selectedPiece
+    let playerLoc = {...this.state.gameMap.playerLoc}
+    let actorLoc = {...this.state.gameMap.actorLoc}
 
-    // using this method to create a deep copy
+    // Create a deep copy of grid array
     let grid = JSON.stringify(this.state.gameMap.grid);
     grid = JSON.parse(grid)
 
-    // Update only if isPlayer & player has a location
-    if (this.state.pieces[piece].type == "player"){
+    if (this.state.pieces[selectedPiece].type !== "environment"){
+      if (this.state.pieces[selectedPiece].type == "player"){
+        // Update only if isPlayer & player has a location
 
-      if (this.state.gameMap.playerLoc){
-  //      gameMap.grid = updateGrid(gameMap.grid, gameMap.playerLoc, piece);
+        if (this.state.gameMap.playerLoc){
+    //      gameMap.grid = updateGrid(gameMap.grid, gameMap.playerLoc, piece);
+        }
       }
-    }
-    //let maxNum = this.state.pieces[piece].number
-    //let numOnMap = this.state.gameMap.actorLoc
 
-    grid = updateGrid(grid, vector, piece)
+      if (this.state.pieces[selectedPiece.type == "actor"]){}
+
+      //let maxNum = this.state.pieces[piece].number
+      //let numOnMap = this.state.gameMap.actorLoc
+    }
+
+    grid = updateGrid(grid, vector, selectedPiece)
 
     this.setState({
-      ...this.state.GameMap,
-      grid: grid
+      gameMap: {
+        ...this.state.gameMap,
+        grid: grid,
+        playerLoc: playerLoc,
+        actorLoc: actorLoc
+      }
     })
   }
 
@@ -235,12 +246,13 @@ class MapBuilder extends React.Component {
           <Table
             gameMap={this.state.gameMap}
             pieces={this.props.pieces}
+
             selecting={this.state.selectingActive}
             selectedPiece={this.state.selectedPiece}
-            toggleTile={this.toggleTile.bind(this)}
-
             onMouseDown={this.startSelecting.bind(this)}
             onMouseUp={this.endSelecting.bind(this)}
+
+            toggleTile={this.toggleTile.bind(this)}
           />
         </Main>
       </div>
