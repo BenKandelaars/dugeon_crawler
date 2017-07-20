@@ -4,6 +4,8 @@ import "../Reusable/globalStyles.css"
 import { Vector, initGrid} from "../Util/utils.js"
 import { Title } from "../Reusable/components.js"
 
+// this is a test for my new feature
+
 const Nav = props => {
   return (
     <nav>
@@ -107,6 +109,8 @@ const Table = props => {
 }
 
 function updateGrid(newGrid, vector, piece) {
+  if (vector === null) { return newGrid }
+
   let tile = newGrid[vector.y][vector.x];
   tile = tile === piece ? "" : piece;
 
@@ -121,21 +125,19 @@ class MapBuilder extends React.Component {
 
     this.state = {
       gameMap: this.props.gameMap,
-      pieces: this.props.pieces,
       selectingActive: false,
       selectedPiece: "#",
       exiting: false //MAKE THIS CLEARER
     }
   }
 
-  /* componentWillMount() {
-
+   componentWillMount() {
     /* Code to initialise a fresh grid. Using mapBuilder to edit current game map so it initialise the current map instead.
     this.setState({
       grid: initGrid(this.state.x, this.state.y),
-    })
+    })*/
 
-  } */
+  }
 
   exitHome() {
     this.setState(
@@ -153,29 +155,74 @@ class MapBuilder extends React.Component {
     if (x === null) { return }
 
     const y = e.target.getAttribute("data-y");
-    const vector = new Vector(x, y)
+    let vector = new Vector(x, y)
 
     const selectedPiece = this.state.selectedPiece
-    let playerLoc = {...this.state.gameMap.playerLoc}
+    const selectedPieceType = this.props.pieces[selectedPiece].type
+    let playerLoc = {... this.state.gameMap.playerLoc}
     let actorLoc = {...this.state.gameMap.actorLoc}
 
     // Create a deep copy of grid array
     let grid = JSON.stringify(this.state.gameMap.grid);
     grid = JSON.parse(grid)
 
-    if (this.state.pieces[selectedPiece].type !== "environment"){
-      if (this.state.pieces[selectedPiece].type == "player"){
-        // Update only if isPlayer & player has a location
+    // Default behaviour is grid square is toggled.
 
-        if (this.state.gameMap.playerLoc){
-    //      gameMap.grid = updateGrid(gameMap.grid, gameMap.playerLoc, piece);
+    if (selectedPieceType !== "environment"){
+      const maxAllowed = this.props.pieces[selectedPiece].max
+
+      if (selectedPieceType == "player"){
+        const isPlayerOnMap = playerLoc.hasOwnProperty("x")
+
+        if (isPlayerOnMap){
+
+          // Click has been on current location
+          if (playerLoc.x == vector.x && playerLoc.y == vector.y){
+            playerLoc = {}; // Reset location
+          } else { // new location, remove current & update location
+            grid = updateGrid(grid, playerLoc, selectedPiece);
+            playerLoc = vector
+          }
+        } else { // Player hasn't been placed yet.
+          playerLoc = vector
         }
       }
 
-      if (this.state.pieces[selectedPiece.type == "actor"]){}
+      if (selectedPieceType == "actor"){
+        // take / make array of that actor's Locations
+        let locations = actorLoc[selectedPiece] || [];
+      //  console.log("Locations at start = ", locations)
+      //  console.log("Vector = ", vector)
 
-      //let maxNum = this.state.pieces[piece].number
-      //let numOnMap = this.state.gameMap.actorLoc
+        let unique = true;
+      //   console.log("updatedLocations = ", updatedLocations)
+
+        let updatedLocations = locations.filter((nextV) => {
+          if (nextV.x == vector.x && nextV.y == vector.y){
+            unique = false;
+            return Boolean(false)
+          } else {
+            return Boolean(true)
+          }
+        });
+
+        //console.log("Updated locations", updatedLocations)
+
+        let numOnMap = updatedLocations.length;
+        const maxAllowed = this.props.pieces[selectedPiece].max;
+
+        if (unique && numOnMap < maxAllowed) {
+          updatedLocations.push(vector)
+        }
+
+        if (numOnMap === maxAllowed) {
+          vector = null // do nothing
+        }
+
+        // update object to return
+        actorLoc[selectedPiece] = updatedLocations;
+      //  console.log("actorLoc = ", actorLoc)
+      }
     }
 
     grid = updateGrid(grid, vector, selectedPiece)
