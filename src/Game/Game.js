@@ -1,82 +1,120 @@
 import React from "react";
 import "./Game.css"
 import "../Reusable/globalStyles.css"
-import { Vector, initPlayer, gameData } from "../Util/utils.js"
+import { Vector, vectorPlus, initPlayer, gameData } from "../Util/utils.js"
 import { Title } from "../Reusable/components.js"
+import { Nav, Stats, Grid } from "./sub-components.js"
 
-const Grid = props => {
-  let grid = props.gameMap.grid.map((row, Yindex) => {
-    return (
-    <tr key={Yindex}>
-      {
-        row.map((tile, Xindex) => {
-          return (
-            <td
-              key={ Yindex * props.gameMap.x + Xindex }
-              style={(tile) ? {backgroundColor: props.pieces[tile].color} : null}
-              data-x={ Xindex }
-              data-y={ Yindex }
-            />
-          )
-        })
-      }
-    </tr>
-    )
-  })
-
-  return (
-    <table className="game_table">
-      <tbody>
-        {grid}
-      </tbody>
-    </table>
-  )
-}
-
-const Nav = props => {
-  return (
-    <nav>
-      <div className="nav_box">
-        <button className="btn_main" onClick={() => props.changeLocation("home")}>Home</button>
-        <button className="btn_main" onClick={() => {}}>Pause</button>
-        <button className="btn_main" onClick={() => {}}>Reveal</button>
-      </div>
-    </nav>
-  )
-}
-
-const Stats = props => {
-  return (
-  <ul className="stats">
-    <li>Level: {props.level} </li>
-    <li>Health: {props.health}</li>
-    <li>Weapon: {props.weapon}</li>
-  </ul>
-  )
+const keyCodeLookup = {
+  37: ["left", [-1, 0]],
+  38: ["up", [0, -1]],
+  39: ["right", [1, 0]],
+  40: ["down", [0, 1]]
 }
 
 class Game extends React.Component {
   constructor (props) {
     super(props);
 
-    this.actors = this.props.actors;
+    this.timer
     this.state = {
-      player: initPlayer()
+      gameMap: this.props.gameMap,
+      player: initPlayer(),
+      moveInput: ""
     }
   }
+
+  gameloop() {
+    /*
+    {
+      ...this.state,
+      ...this.props.gameMap,
+      ...this.props.pieces
+    }
+    */
+
+    const playerMove = this.state.moveInput
+    let playerLoc = {... this.state.gameMap.playerLoc}
+    let newPlayerLoc
+
+    let grid = JSON.stringify(this.state.gameMap.grid);
+    grid = JSON.parse(grid)
+
+    if(playerMove){
+      newPlayerLoc = vectorPlus(playerLoc, new Vector(...playerMove[1]))
+
+      if (grid[newPlayerLoc.y][newPlayerLoc.x] === "#") {
+        console.log("boof!!")
+      }
+      
+      if (grid[newPlayerLoc.y][newPlayerLoc.x] === "") {
+        const gridIcon = grid[playerLoc.y][playerLoc.x];
+        grid[playerLoc.y][playerLoc.x] = "";
+        grid[newPlayerLoc.y][newPlayerLoc.x] = gridIcon;
+        console.log(newPlayerLoc)
+      } else {
+        newPlayerLoc = playerLoc
+      }
+
+
+
+    }
+
+    this.setState({
+      moveInput: null,
+      gameMap: {
+        ...this.state.gameMap,
+        grid: grid,
+        playerLoc: newPlayerLoc || playerLoc
+      }
+    })
+  }
+
+  componentWillUnmount(){
+    clearInterval(this.timer);
+  }
+
+  start() {
+    this.setTimer()
+  }
+
+  setTimer() {
+    this.timer = setInterval(() => this.gameloop(), 400)
+  }
+
+  pause() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    } else {
+      this.setTimer()
+    }
+  }
+
+  keypress(e) {
+    if(keyCodeLookup.hasOwnProperty(e.keyCode)){
+      this.setState({
+        moveInput: keyCodeLookup[e.keyCode]
+      })
+    }
+  }
+
   render () {
+
     return (
-      <div>
+      <div onKeyDown={ (e) => this.keypress(e) }>
         <Title title="Game Level 1" />
         <Nav
-          changeLocation={this.props.changeLocation}/>
+          changeLocation={this.props.changeLocation}
+          start={this.start.bind(this)}
+          pause={this.pause.bind(this)}/>
         <Stats
           level={this.state.player.level}
           health={this.state.player.health}
           weapon={this.state.player.weapon} />
         <div>
           <Grid
-            gameMap={this.props.gameMap}
+            gameMap={this.state.gameMap}
             pieces={this.props.pieces} />
         </div>
       </div>
