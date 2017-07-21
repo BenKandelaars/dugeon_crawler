@@ -5,6 +5,13 @@ export function Vector(x, y) {
   this.y = y;
 }
 
+export function vectorPlus(vector1, vector2) {
+  return {
+    x: vector1.x + vector2.x,
+    y: vector1.y + vector2.y
+  }
+}
+
 export function initGrid(x, y) {
   let grid_row = new Array(x);
   grid_row.fill("");
@@ -30,9 +37,9 @@ export function initGameMaps() {
       grid: [["#","#","","","#","#","#","#","#","#"],["#","","","@","","","","","","#"],["#","","","","","","","","","#"],["#","","","","","","","","","#"],["#","","","#","#","#","#","","","#"],["#","","","#","","","#","","","#"],["#","","","#","+","","#","","","#"],["#","","","","","","","","","#"],["#","","","","","","","","","#"],["#","#","#","#","#","#","#","#","#","#"]],
       x: 10,
       y: 10,
-      actorLoc: {
+      actorLoc: {"@": [new Vector(3, 1)] //object with locaitons in an array
       },
-      playerLoc: {} // vector
+      playerLoc: new Vector(4, 6)// vector
     }
   }
 }

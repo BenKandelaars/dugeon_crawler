@@ -4,7 +4,8 @@ import "../Reusable/globalStyles.css"
 import { Vector, initGrid} from "../Util/utils.js"
 import { Title } from "../Reusable/components.js"
 
-// this is a test for my new feature
+// Bug - when you overwrite player with wall, player doesn't update
+
 
 const Nav = props => {
   return (
@@ -173,9 +174,11 @@ class MapBuilder extends React.Component {
 
       if (selectedPieceType == "player"){
         const isPlayerOnMap = playerLoc.hasOwnProperty("x")
+        console.log("playerLoc ", playerLoc)
+        console.log("vector ", vector)
 
         if (isPlayerOnMap){
-
+          console.log("player on map triggered")
           // Click has been on current location
           if (playerLoc.x == vector.x && playerLoc.y == vector.y){
             playerLoc = {}; // Reset location
@@ -184,6 +187,8 @@ class MapBuilder extends React.Component {
             playerLoc = vector
           }
         } else { // Player hasn't been placed yet.
+        console.log("player on map NOT triggered")
+
           playerLoc = vector
         }
       }
@@ -227,6 +232,7 @@ class MapBuilder extends React.Component {
 
     grid = updateGrid(grid, vector, selectedPiece)
 
+
     this.setState({
       gameMap: {
         ...this.state.gameMap,
@@ -260,7 +266,10 @@ class MapBuilder extends React.Component {
   }
 
   exportMap() {
-    console.log(JSON.stringify(this.state.gameMap.grid))
+    console.log("Grid: ", JSON.stringify(this.state.gameMap.grid))
+    console.log("PlayerLoc: ", JSON.stringify(this.state.gameMap.playerLoc))
+    console.log("ActorLoc: ", JSON.stringify(this.state.gameMap.actorLoc))
+
   }
 
   changeSelectedPiece(e) {
