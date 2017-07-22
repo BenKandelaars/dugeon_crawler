@@ -8,6 +8,7 @@ button {
 .btn_main {
   margin-right: 10px;
   margin-left: 10px;
+  min-width: 60px;
   border-bottom: 1px solid red;
   border-radius: 5px;
   padding: 10px;

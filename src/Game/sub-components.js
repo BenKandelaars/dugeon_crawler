@@ -32,12 +32,18 @@ export function Grid (props) {
 }
 
 export function Nav(props) {
+  /* Code for game play on an automatic loop. Roguelike doesn't require start / pause
+  <button className="btn_main" onClick={() => {props.start()}}>Start</button>
+  <button className="btn_main" onClick={() => {props.pause()}}>Pause</button>
+  */
+
   return (
     <nav>
       <div className="nav_box">
         <button className="btn_main" onClick={() => props.changeLocation("home")}>Home</button>
-        <button className="btn_main" onClick={() => {props.start()}}>Start</button>
-        <button className="btn_main" onClick={() => {props.pause()}}>Pause</button>
+        <button className="btn_main" onClick={() => {props.startPause()}}>
+          {props.gameRunning ? "Pause" : "Start"}
+        </button>
         <button className="btn_main" onClick={() => {}}>Reveal</button>
       </div>
     </nav>

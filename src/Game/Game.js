@@ -17,10 +17,11 @@ class Game extends React.Component {
     super(props);
 
     this.timer
+    this.moveInput
     this.state = {
+      gameRunning: false,
       gameMap: this.props.gameMap,
       player: initPlayer(),
-      moveInput: ""
     }
   }
 
@@ -32,8 +33,7 @@ class Game extends React.Component {
       ...this.props.pieces
     }
     */
-
-    const playerMove = this.state.moveInput
+    const playerMove = this.moveInput
     let playerLoc = {... this.state.gameMap.playerLoc}
     let newPlayerLoc
 
@@ -46,22 +46,17 @@ class Game extends React.Component {
       if (grid[newPlayerLoc.y][newPlayerLoc.x] === "#") {
         console.log("boof!!")
       }
-      
+
       if (grid[newPlayerLoc.y][newPlayerLoc.x] === "") {
         const gridIcon = grid[playerLoc.y][playerLoc.x];
         grid[playerLoc.y][playerLoc.x] = "";
         grid[newPlayerLoc.y][newPlayerLoc.x] = gridIcon;
-        console.log(newPlayerLoc)
       } else {
         newPlayerLoc = playerLoc
       }
-
-
-
     }
-
+    this.moveInput = null
     this.setState({
-      moveInput: null,
       gameMap: {
         ...this.state.gameMap,
         grid: grid,
@@ -70,16 +65,14 @@ class Game extends React.Component {
     })
   }
 
+// Replacement code for a interval timer
+/*
   componentWillUnmount(){
     clearInterval(this.timer);
   }
 
   start() {
-    this.setTimer()
-  }
-
-  setTimer() {
-    this.timer = setInterval(() => this.gameloop(), 400)
+     this.setTimer()
   }
 
   pause() {
@@ -91,11 +84,44 @@ class Game extends React.Component {
     }
   }
 
+  setTimer() {
+    this.timer = setInterval(() => this.gameloop(), 400)
+  }
+*/
+
+// Code for rogue like turn taking
+  startPause() {
+    if(this.state.gameRunning) {
+      this.setState({
+        gameRunning: !this.state.gameRunning
+      })
+    } else {
+      this.setTimeStamp()
+      this.setState({
+        gameRunning: !this.state.gameRunning
+      })
+    }
+  }
+
+  setTimeStamp() {
+    const date = new Date();
+    this.timeStamp = date.getTime();
+  }
+//
+
   keypress(e) {
     if(keyCodeLookup.hasOwnProperty(e.keyCode)){
-      this.setState({
-        moveInput: keyCodeLookup[e.keyCode]
-      })
+      this.moveInput = keyCodeLookup[e.keyCode]
+    }
+
+    const date = new Date();
+    const timeElapsed = date.getTime()-this.timeStamp
+
+    if (timeElapsed > 400) {
+      this.gameloop()
+      this.setTimeStamp()
+    } else {
+      setTimeout(() => this.gameloop(), 500 - timeElapsed)
     }
   }
 
@@ -106,8 +132,11 @@ class Game extends React.Component {
         <Title title="Game Level 1" />
         <Nav
           changeLocation={this.props.changeLocation}
-          start={this.start.bind(this)}
-          pause={this.pause.bind(this)}/>
+        //  start={this.start.bind(this)}
+        //  pause={this.pause.bind(this)}
+          startPause={this.startPause.bind(this)}
+          gameRunning={this.state.gameRunning}
+          />
         <Stats
           level={this.state.player.level}
           health={this.state.player.health}
