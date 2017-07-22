@@ -5,6 +5,9 @@ import { Vector, vectorPlus, initPlayer, gameData } from "../Util/utils.js"
 import { Title } from "../Reusable/components.js"
 import { Nav, Stats, Grid } from "./sub-components.js"
 
+// 1. Feature/ Open Modal on encounter with enemy - use react modal from npm
+// 2. Feature/ Exit blocks to complete gameMap
+
 const keyCodeLookup = {
   37: ["left", [-1, 0]],
   38: ["up", [0, -1]],
@@ -20,6 +23,7 @@ class Game extends React.Component {
     this.moveInput
     this.state = {
       gameRunning: false,
+      revealMap: false,
       gameMap: this.props.gameMap,
       player: initPlayer(),
     }
@@ -117,16 +121,23 @@ class Game extends React.Component {
     const date = new Date();
     const timeElapsed = date.getTime()-this.timeStamp
 
-    if (timeElapsed > 400) {
+    // Minium timing before any move is possible.
+    const MINIMUM_GAMELOOP_TIME = 400
+    if (timeElapsed > MINIMUM_GAMELOOP_TIME) {
       this.gameloop()
       this.setTimeStamp()
     } else {
-      setTimeout(() => this.gameloop(), 500 - timeElapsed)
+      setTimeout(() => this.gameloop(), MINIMUM_GAMELOOP_TIME - timeElapsed)
     }
   }
 
-  render () {
+  toggleRevealMap() {
+    this.setState({
+      revealMap: !this.state.revealMap
+    })
+  }
 
+  render () {
     return (
       <div onKeyDown={ (e) => this.keypress(e) }>
         <Title title="Game Level 1" />
@@ -136,6 +147,7 @@ class Game extends React.Component {
         //  pause={this.pause.bind(this)}
           startPause={this.startPause.bind(this)}
           gameRunning={this.state.gameRunning}
+          toggleRevealMap={this.toggleRevealMap.bind(this)}
           />
         <Stats
           level={this.state.player.level}
@@ -144,6 +156,7 @@ class Game extends React.Component {
         <div>
           <Grid
             gameMap={this.state.gameMap}
+            revealMap={this.state.revealMap}
             pieces={this.props.pieces} />
         </div>
       </div>
