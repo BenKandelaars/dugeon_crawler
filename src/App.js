@@ -5,12 +5,14 @@ import Game from "./Game/Game.js";
 import MapBuilder from "./Builder/MapBuilder.js";
 import { initGameMaps, initGamePieces } from "./Util/utils.js"
 
+// 1. feature/app is responsive
+
 class App extends Component {
   constructor (props){
     super(props),
 
     this.state = {
-      route: "home"
+      route: "home",
     }
   }
 
@@ -19,6 +21,14 @@ class App extends Component {
       route: location,
     })
   }
+
+// Model Feature. Redirecting Game component to create modal
+/* Prev
+*   "game": (props) => <Game {...props} />
+*  replaced with
+*   "game": (props) => <ModelPage {...props} />
+*/
+
 
   render() {
     const components = {
@@ -39,6 +49,10 @@ class App extends Component {
       componentProps = Object.assign(componentProps, {
         gameMap: gameMaps["1"]
       })
+    }
+
+    const style={
+      margin: "0px 200px"
     }
 
     return (

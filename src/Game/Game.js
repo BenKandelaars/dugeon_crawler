@@ -1,12 +1,14 @@
 import React from "react";
-import "./Game.css"
-import "../Reusable/globalStyles.css"
-import { Vector, vectorPlus, initPlayer, gameData } from "../Util/utils.js"
-import { Title } from "../Reusable/components.js"
-import { Nav, Stats, Grid } from "./sub-components.js"
+import "./Game.css";
+import "../Reusable/globalStyles.css";
+import { Vector, vectorPlus, initPlayer, gameData } from "../Util/utils.js";
+import { Title } from "../Reusable/components.js";
+import { Nav, Stats, Grid } from "./sub-components.js";
+import BattleModal from "./BattleModal.js";
 
-// 1. Feature/ Open Modal on encounter with enemy - use react modal from npm
 // 2. Feature/ Exit blocks to complete gameMap
+// 3. Feature/ Enemy's move around
+// 4. Feature/ Combat mechanics
 
 const keyCodeLookup = {
   37: ["left", [-1, 0]],
@@ -26,37 +28,48 @@ class Game extends React.Component {
       revealMap: false,
       gameMap: this.props.gameMap,
       player: initPlayer(),
+      showBattleModal: false
     }
   }
 
   gameloop() {
-    /*
-    {
-      ...this.state,
-      ...this.props.gameMap,
-      ...this.props.pieces
-    }
-    */
     const playerMove = this.moveInput
     let playerLoc = {... this.state.gameMap.playerLoc}
-    let newPlayerLoc
+    let nextPlayerLoc
 
     let grid = JSON.stringify(this.state.gameMap.grid);
     grid = JSON.parse(grid)
 
     if(playerMove){
-      newPlayerLoc = vectorPlus(playerLoc, new Vector(...playerMove[1]))
+      nextPlayerLoc = vectorPlus(playerLoc, new Vector(...playerMove[1]))
+      const  nextGridTile = grid[nextPlayerLoc.y][nextPlayerLoc.x]
 
-      if (grid[newPlayerLoc.y][newPlayerLoc.x] === "#") {
+      if (nextGridTile === "#") {
+      }
+
+      if (nextGridTile === "#") {
         console.log("boof!!")
       }
 
-      if (grid[newPlayerLoc.y][newPlayerLoc.x] === "") {
+      if (nextGridTile === "") {
         const gridIcon = grid[playerLoc.y][playerLoc.x];
         grid[playerLoc.y][playerLoc.x] = "";
-        grid[newPlayerLoc.y][newPlayerLoc.x] = gridIcon;
+        grid[nextPlayerLoc.y][nextPlayerLoc.x] = gridIcon;
       } else {
-        newPlayerLoc = playerLoc
+        nextPlayerLoc = playerLoc
+
+        const objectCollision = this.props.pieces[nextGridTile];
+
+        switch (objectCollision.type) {
+          case "environment":
+            console.log("boof!!")
+            break;
+
+          case "actor":
+            this.setState({
+              showBattleModal: true
+            })
+        }
       }
     }
     this.moveInput = null
@@ -64,7 +77,7 @@ class Game extends React.Component {
       gameMap: {
         ...this.state.gameMap,
         grid: grid,
-        playerLoc: newPlayerLoc || playerLoc
+        playerLoc: nextPlayerLoc || playerLoc
       }
     })
   }
@@ -137,6 +150,12 @@ class Game extends React.Component {
     })
   }
 
+  toggleBattleModal() {
+    this.setState({
+      showBattleModal: !this.state.showBattleModal
+    })
+  }
+
   render () {
     return (
       <div onKeyDown={ (e) => this.keypress(e) }>
@@ -159,6 +178,10 @@ class Game extends React.Component {
             revealMap={this.state.revealMap}
             pieces={this.props.pieces} />
         </div>
+        <BattleModal
+          isOpen={this.state.showBattleModal}
+          toggleModal={this.toggleBattleModal.bind(this)}
+          />
       </div>
     )
   }
