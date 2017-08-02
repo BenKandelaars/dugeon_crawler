@@ -1,5 +1,5 @@
 import React from "react";
-import ModalWrapper from "../Util/ModalWrapper.js";
+import ModalWrapper from "../../common_components/ModalWrapper";
 
 function ModalContent(props) {
   return (

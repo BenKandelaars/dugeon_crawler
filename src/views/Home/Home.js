@@ -1,6 +1,6 @@
 import React from "react";
 import "./home.css"
-import "../Reusable/globalStyles.css"
+import "../../common_styles/globalStyles.css"
 
 // construct index to link between screens
 // start on game

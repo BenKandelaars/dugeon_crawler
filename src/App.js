@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import "./App.css";
-import Home from "./Home/Home.js";
-import Game from "./Game/Game.js";
-import MapBuilder from "./Builder/MapBuilder.js";
-import { initGameMaps, initGamePieces } from "./Util/utils.js"
 
-// 1. feature/app is responsive
+import Home from "./views/Home/Home";
+import Game from "./views/Game/Game";
+import MapBuilder from "./views/Builder/MapBuilder";
+
+import { initGameMaps, initGamePieces } from "./state/state"
+import { createStore } from 'redux';
+import { appReducer } from './reducers/appReducer'
+// 1. make feature/app responsive
 
 class App extends Component {
   constructor (props){
@@ -22,15 +25,11 @@ class App extends Component {
     })
   }
 
-// Model Feature. Redirecting Game component to create modal
-/* Prev
-*   "game": (props) => <Game {...props} />
-*  replaced with
-*   "game": (props) => <ModelPage {...props} />
-*/
-
-
   render() {
+    const style={
+      margin: "0px 200px"
+    }
+
     const components = {
       "home": (props) => <Home {...props} />,
       "mapBuilder": (props) => <MapBuilder {...props} />,
@@ -51,10 +50,6 @@ class App extends Component {
       })
     }
 
-    const style={
-      margin: "0px 200px"
-    }
-
     return (
       <div className="Body">
         <header>
@@ -67,5 +62,25 @@ class App extends Component {
     );
   }
 }
+
+function rootReducer ( state = 0, action ) {
+  switch (action.type) {
+    case 'INCREMENT':
+      return state + 1
+    case 'DECREMENT':
+      return state -1
+    default:
+      return state
+  }
+}
+
+let store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+store.subscribe( () => console.log(store.getState()));
+
+store.dispatch({ type: 'INCREMENT' });
+store.dispatch({ type: 'INCREMENT' });
+store.dispatch({ type: 'INCREMENT' });
 
 export default App;

@@ -1,8 +1,8 @@
 import React from "react";
 import "./mapbuilder.css";
-import "../Reusable/globalStyles.css"
-import { Vector, initGrid} from "../Util/utils.js"
-import { Title } from "../Reusable/components.js"
+import "../../common_styles/globalStyles.css"
+import { Vector, initGrid } from "../../utilities/utils"
+import { Title } from "../../common_components/Components"
 
 // Bug - when you overwrite player with wall, player doesn't update
 

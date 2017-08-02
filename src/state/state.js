@@ -1,35 +1,29 @@
-
-
-export function Vector(x, y) {
-  this.x = x;
-  this.y = y;
-}
-
-export function vectorPlus(vector1, vector2) {
-  return {
-    x: vector1.x + vector2.x,
-    y: vector1.y + vector2.y
-  }
-}
-
-export function initGrid(x, y) {
-  let grid_row = new Array(x);
-  grid_row.fill("");
-  let grid = new Array(y);
-  grid.fill(grid_row);
-
-  return grid
-}
+import { Vector } from '../utilities/utils'
+// Redux - in reducers initial state & services
 
 export function initPlayer() {
+ const baseStats = {
+    attack: 1,
+    defend: 1
+  }
+ 
+  const weapon = {
+      type: "Dagger",
+      attack: 4,
+      defend: 1
+    }
+
   return {
     color: "purple",
     health: 10,
+    level: 1,
     weapon: "Dagger",
-    power: 5,
-    level: 1
+    attack: 5,
+    defend: 2,
   }
 }
+
+// REdux - yet to be split up.
 
 export function initGameMaps() {
   return {
@@ -43,6 +37,8 @@ export function initGameMaps() {
     }
   }
 }
+
+// Redux - in services folder
 
 export function initGamePieces() {
   return {

@@ -1,7 +1,7 @@
 import React from "react";
 import "./Game.css"
-import "../Reusable/globalStyles.css"
-import { Vector, vectorPlus } from "../Util/utils.js"
+import "../../common_styles/globalStyles.css"
+import { Vector, vectorPlus } from "../../utilities/utils"
 
 export function Grid (props) {
   const playerLoc = props.gameMap.playerLoc
@@ -65,12 +65,7 @@ export function Grid (props) {
 }
 
 export function Nav(props) {
-  /* Code for game play on an automatic loop. Roguelike doesn't require start / pause
-  <button className="btn_main" onClick={() => {props.start()}}>Start</button>
-  <button className="btn_main" onClick={() => {props.pause()}}>Pause</button>
-  */
-
-  return (
+   return (
     <nav>
       <div className="nav_box">
         <button className="btn_main" onClick={() => props.changeLocation("home")}>Home</button>
@@ -88,7 +83,7 @@ export function Stats(props) {
   <ul className="stats">
     <li>Level: {props.level} </li>
     <li>Health: {props.health}</li>
-    <li>Weapon: {props.weapon}</li>
+    <li>Weapon: {props.weapon} ()</li>
   </ul>
   )
 }

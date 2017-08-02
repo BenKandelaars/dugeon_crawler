@@ -1,10 +1,11 @@
 import React from "react";
 import "./Game.css";
-import "../Reusable/globalStyles.css";
-import { Vector, vectorPlus, initPlayer, gameData } from "../Util/utils.js";
-import { Title } from "../Reusable/components.js";
-import { Nav, Stats, Grid } from "./sub-components.js";
-import BattleModal from "./BattleModal.js";
+import "../../common_styles/globalStyles.css";
+import { Vector, vectorPlus } from "../../utilities/utils";
+import { initPlayer, gameData } from '../../state/state';
+import { Title } from "../../common_components/Components";
+import { Nav, Stats, Grid } from "./sub-components";
+import BattleModal from "./BattleModal";
 
 // 2. Feature/ Exit blocks to complete gameMap
 // 3. Feature/ Enemy's move around
@@ -82,31 +83,6 @@ class Game extends React.Component {
     })
   }
 
-// Replacement code for a interval timer
-/*
-  componentWillUnmount(){
-    clearInterval(this.timer);
-  }
-
-  start() {
-     this.setTimer()
-  }
-
-  pause() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
-    } else {
-      this.setTimer()
-    }
-  }
-
-  setTimer() {
-    this.timer = setInterval(() => this.gameloop(), 400)
-  }
-*/
-
-// Code for rogue like turn taking
   startPause() {
     if(this.state.gameRunning) {
       this.setState({
@@ -124,7 +100,6 @@ class Game extends React.Component {
     const date = new Date();
     this.timeStamp = date.getTime();
   }
-//
 
   keypress(e) {
     if(keyCodeLookup.hasOwnProperty(e.keyCode)){
@@ -162,8 +137,6 @@ class Game extends React.Component {
         <Title title="Game Level 1" />
         <Nav
           changeLocation={this.props.changeLocation}
-        //  start={this.start.bind(this)}
-        //  pause={this.pause.bind(this)}
           startPause={this.startPause.bind(this)}
           gameRunning={this.state.gameRunning}
           toggleRevealMap={this.toggleRevealMap.bind(this)}
