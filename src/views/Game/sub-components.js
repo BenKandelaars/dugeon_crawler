@@ -1,5 +1,5 @@
 import React from "react";
-import "./Game.css"
+import "./game.css"
 import "../../common_styles/globalStyles.css"
 import { Vector, vectorPlus } from "../../utilities/utils"
 
@@ -44,7 +44,6 @@ export function Grid (props) {
             <td
               key={ Yindex * props.gameMap.x + Xindex }
               style={cellColor(tile, Yindex, Xindex)}
-              className={(props.revealMap) ? "" : "concealCell"}
               data-x={ Xindex }
               data-y={ Yindex }
             />
@@ -54,6 +53,9 @@ export function Grid (props) {
     </tr>
     )
   })
+
+//  className={(props.revealMap) ? "" : "concealCell"}
+
 
   return (
     <table className="game_table">

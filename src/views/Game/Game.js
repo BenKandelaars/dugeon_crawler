@@ -1,5 +1,5 @@
 import React from "react";
-import "./Game.css";
+import "./game.css";
 import "../../common_styles/globalStyles.css";
 import { Vector, vectorPlus } from "../../utilities/utils";
 import { initPlayer, gameData } from '../../state/state';
@@ -35,7 +35,7 @@ class Game extends React.Component {
 
   gameloop() {
     const playerMove = this.moveInput
-    let playerLoc = {... this.state.gameMap.playerLoc}
+    let playerLoc = {...this.state.gameMap.playerLoc}
     let nextPlayerLoc
 
     let grid = JSON.stringify(this.state.gameMap.grid);

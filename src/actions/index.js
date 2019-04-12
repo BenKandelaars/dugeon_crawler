@@ -11,3 +11,9 @@
 //     maxValue: counterDefaultVal.speed.max
 //   }
 // }
+
+export const battle = () => {
+    return {
+        type: 'BATTLE'
+    }
+}

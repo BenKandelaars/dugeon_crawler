@@ -30,7 +30,7 @@ export function getPlayerBaseStats() {
 
 export function getWeapons() {
  return {
-  Dagger: {
+  dagger: {
     type: "Dagger",
     attack: 4,
     defend: 1

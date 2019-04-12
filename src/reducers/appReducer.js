@@ -1,12 +1,12 @@
 import { getPlayerBaseStats, getWeapons } from '../services/index'
 
-function getInitialState() {
+export function getInitialState() {
     const playerBaseStats = getPlayerBaseStats()
     const weapons = getWeapons()
 
     const attack = playerBaseStats.attack + weapons.dagger.attack;
     const defend = playerBaseStats.defend + weapons.dagger.defend;
-   
+
     return {         
         player: {
             name: "Ryan",
@@ -16,10 +16,30 @@ function getInitialState() {
             weapon: "Dagger",
             attack: attack,
             defend: defend
-        }   
+        },
+        isBattle: false  
     }
 }
 
-function appReducer(state = getInitialState, action) {
-    return state
+function rootReducer ( state = 0, action ) {
+  switch (action.type) {
+    case 'INCREMENT':
+      return state + 1
+    case 'DECREMENT':
+      return state -1
+    default:
+      return state
+  }
+}
+
+export function appReducer(state = getInitialState(), action) {
+    switch(action.type){
+        case 'BATTLE':
+            return {
+               ...state,
+               battle: !state.battle
+            };
+        default:
+            return state;
+    }
 }
